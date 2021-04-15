@@ -27,13 +27,16 @@ async def handle_mouse():
         if event.type == ecodes.EV_KEY:
             key_event = evdev.categorize(event)
             print(key_event.keycode)
-            if key_event.keycode == "BTN_SIDE" or key_event.keycode == "BTN_EXTRA":
+            if key_event.keycode == "BTN_SIDE":
+                process_event(key_event)
+                continue
+            elif key_event.keycode == "BTN_EXTRA":
                 process_event(key_event)
                 continue
             else:
                 virtual_mouse.write_event(event)
-        else:
-            virtual_mouse.write_event(event)
+    else:
+        virtual_mouse.write_event(event)
 
 
 def process_event(key_event):
@@ -45,4 +48,3 @@ asyncio.ensure_future(handle_mouse())
 
 event_loop = asyncio.get_event_loop()
 event_loop.run_forever()
-
